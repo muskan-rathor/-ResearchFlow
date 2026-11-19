@@ -1,0 +1,27 @@
+
+services:
+  db:
+    image: pgvector/pgvector:pg16
+    container_name: researchflow-db
+
+    environment:
+      POSTGRES_USER: researchflow
+      POSTGRES_PASSWORD: researchflow_dev_password
+      POSTGRES_DB: researchflow
+
+    ports:
+      - "5433:5432"
+
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U researchflow -d researchflow"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+    restart: unless-stopped
+
+volumes:
+  postgres_data:

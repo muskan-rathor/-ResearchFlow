@@ -1,0 +1,147 @@
+
+.auth-page {
+  min-height: 100vh;
+  background: #f8f9fc;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 30px 18px;
+}
+
+.auth-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 21px;
+  font-weight: 750;
+  color: #252344;
+  margin-bottom: 28px;
+}
+
+.auth-brand-icon {
+  width: 37px;
+  height: 37px;
+  display: grid;
+  place-items: center;
+  background: #6557d9;
+  color: white;
+  border-radius: 10px;
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 420px;
+  padding: 34px;
+  background: white;
+  border: 1px solid #ececf3;
+  border-radius: 14px;
+  box-shadow: 0 12px 40px #2523440a;
+}
+
+.auth-heading {
+  margin-bottom: 28px;
+}
+
+.auth-eyebrow {
+  font-size: 10px;
+  font-weight: 750;
+  letter-spacing: 1.2px;
+  color: #7569d7;
+}
+
+.auth-heading h1 {
+  font-size: 25px;
+  letter-spacing: -0.8px;
+  color: #25253e;
+  margin: 12px 0 8px;
+}
+
+.auth-heading > p:last-child {
+  font-size: 12px;
+  color: #85879a;
+}
+
+.auth-card form {
+  display: flex;
+  flex-direction: column;
+  gap: 17px;
+}
+
+.auth-card label {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 12px;
+  font-weight: 650;
+  color: #45465c;
+}
+
+.auth-card input {
+  height: 44px;
+  padding: 0 13px;
+  border: 1px solid #e3e4ed;
+  border-radius: 7px;
+  outline: none;
+  font-size: 12px;
+  color: #25253e;
+}
+
+.auth-card input:focus {
+  border-color: #6557d9;
+  box-shadow: 0 0 0 3px #6557d918;
+}
+
+.auth-submit {
+  height: 45px;
+  border: 0;
+  border-radius: 7px;
+  background: #6557d9;
+  color: white;
+  font-size: 13px;
+  font-weight: 650;
+  margin-top: 5px;
+}
+
+.auth-submit:disabled {
+  opacity: 0.65;
+  cursor: wait;
+}
+
+.auth-error,
+.auth-success {
+  padding: 10px;
+  border-radius: 6px;
+  font-size: 12px;
+}
+
+.auth-error {
+  color: #b42332;
+  background: #fff0f1;
+}
+
+.auth-success {
+  color: #147a51;
+  background: #eaf8f1;
+}
+
+.auth-switch {
+  text-align: center;
+  margin-top: 23px;
+  font-size: 12px;
+  color: #85879a;
+}
+
+.auth-switch button {
+  border: 0;
+  background: transparent;
+  color: #6557d9;
+  font-weight: 700;
+  margin-left: 5px;
+}
+
+.auth-footer {
+  color: #a0a1b0;
+  font-size: 10px;
+  margin-top: 25px;
+}
