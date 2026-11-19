@@ -1,11 +1,22 @@
 
 import multer from "multer";
 import path from "path";
+import fs from "fs";
 import { randomUUID } from "crypto";
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Resolve to backend/uploads/papers
+const uploadDir = path.resolve(__dirname, "../../uploads/papers");
+
+// Ensure the directory exists before accepting uploads
+fs.mkdirSync(uploadDir, { recursive: true });
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "uploads/papers");
+    cb(null, uploadDir);
   },
 
   filename: (req, file, cb) => {
