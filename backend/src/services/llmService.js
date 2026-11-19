@@ -1,8 +1,49 @@
 
+import { GoogleGenAI } from "@google/genai";
+
 const OLLAMA_URL =
   process.env.OLLAMA_BASE_URL || "http://localhost:11434";
 
-export const generateAnswer = async (
+const generateWithGemini = async (
+  prompt,
+  { format, num_predict = 350, temperature = 0.2 } = {}
+) => {
+  if (!process.env.GEMINI_API_KEY) {
+    throw new Error("GEMINI_API_KEY is missing");
+  }
+
+  const ai = new GoogleGenAI({
+    apiKey: process.env.GEMINI_API_KEY,
+  });
+
+  const config = {
+    temperature,
+    maxOutputTokens: num_predict,
+  };
+
+  if (format === "json") {
+    config.responseMimeType = "application/json";
+  } else if (format && typeof format === "object") {
+    config.responseMimeType = "application/json";
+    config.responseJsonSchema = format;
+  }
+
+  const response = await ai.models.generateContent({
+    model: process.env.GEMINI_MODEL || "gemini-3.8-flash",
+    contents: prompt,
+    config,
+  });
+
+  const answer = response.text;
+
+  if (!answer) {
+    throw new Error("Gemini returned an empty response");
+  }
+
+  return answer;
+};
+
+const generateWithOllama = async (
   prompt,
   {
     format,
@@ -41,4 +82,18 @@ export const generateAnswer = async (
   }
 
   return data.response;
+};
+
+export const generateAnswer = async (prompt, options = {}) => {
+  const provider = process.env.LLM_PROVIDER || "ollama";
+
+  if (provider === "gemini") {
+    return generateWithGemini(prompt, options);
+  }
+
+  if (provider === "ollama") {
+    return generateWithOllama(prompt, options);
+  }
+
+  throw new Error(`Unsupported LLM provider: ${provider}`);
 };
