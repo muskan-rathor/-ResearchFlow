@@ -28,11 +28,46 @@ const generateWithGemini = async (
     config.responseJsonSchema = format;
   }
 
-  const response = await ai.models.generateContent({
-    model: process.env.GEMINI_MODEL || "gemini-3.8-flash",
-    contents: prompt,
-    config,
-  });
+  
+const MAX_ATTEMPTS = 3;
+let response;
+
+for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
+  try {
+    console.log(`Gemini request attempt ${attempt}/${MAX_ATTEMPTS}`);
+
+    response = await ai.models.generateContent({
+      model: process.env.GEMINI_MODEL || "gemini-3.8-flash",
+      contents: prompt,
+      config,
+    });
+
+    break;
+  } catch (error) {
+    const status = error.status || error.code;
+
+    const retryable = [429, 500, 502, 503, 504].includes(
+      Number(status)
+    );
+
+    if (!retryable || attempt === MAX_ATTEMPTS) {
+      throw error;
+    }
+
+    const delay = 2000 * Math.pow(2, attempt - 1);
+
+    console.warn(
+      `Gemini temporarily unavailable (${status}). Retrying in ${delay / 1000}s...`
+    );
+
+    await new Promise((resolve) => setTimeout(resolve, delay));
+  }
+}
+
+if (!response) {
+  throw new Error("Gemini failed to generate a response");
+}
+
 
   const answer = response.text;
 
