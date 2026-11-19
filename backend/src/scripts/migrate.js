@@ -6,12 +6,23 @@ dotenv.config();
 
 const runMigrations = async () => {
   try {
+    const databaseUrl =
+      process.env.MIGRATION_DATABASE_URL ||
+      process.env.DATABASE_URL;
+
+    if (!databaseUrl) {
+      throw new Error("Migration database URL is missing");
+    }
+
+    console.log("Starting database migrations...");
+
     await runner({
-      databaseUrl: process.env.DATABASE_URL,
+      databaseUrl,
       dir: "migrations",
       direction: "up",
       migrationsTable: "pgmigrations",
-      verbose: true
+      verbose: true,
+      ssl: { rejectUnauthorized: false },
     });
 
     console.log("Migrations completed successfully!");

@@ -13,9 +13,14 @@ export const pool = new Pool({
   password: process.env.DB_PASSWORD,
   port: Number(process.env.DB_PORT),
 
+  // Enable SSL for Supabase, keep it disabled for local Docker.
+  ...(process.env.DB_SSL === "true"
+    ? { ssl: { rejectUnauthorized: false } }
+    : {}),
+
   max: 10,
   idleTimeoutMillis: 30000,
-  connectionTimeoutMillis: 2000
+  connectionTimeoutMillis: 10000,
 });
 
 pool.on("connect", () => {
